@@ -40,7 +40,7 @@ export interface UseTransactionsReturn {
   transactions: TransactionWithCategory[];
   categories: Category[];
   isLoading: boolean;
-  addTransaction: (tx: Omit<Transaction, "id" | "createdAt" | "updatedAt">) => Promise<void>;
+  addTransaction: (tx: Omit<Transaction, "id" | "createdAt" | "updatedAt">) => Promise<Transaction>;
   editTransaction: (tx: Transaction) => Promise<void>;
   removeTransaction: (id: string) => Promise<void>;
   reload: () => Promise<void>;
@@ -89,6 +89,7 @@ export function useTransactions(workspaceId: string): UseTransactionsReturn {
       await createTransaction(full);
       await notifyBudgetThreshold(workspaceId, full, transactions, categories);
       await reload();
+      return full;
     },
     [workspaceId, transactions, categories, reload]
   );

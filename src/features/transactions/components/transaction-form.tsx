@@ -11,16 +11,19 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { transactionSchema, type TransactionFormValues } from "../schemas/transaction.schema";
+import { AttachmentManager } from "./attachment-manager";
+import type { UseAttachmentsReturn } from "../hooks/use-attachments";
 import type { Category, Transaction } from "@/types";
 
 interface TransactionFormProps {
   categories: Category[];
   defaultValues?: Partial<Transaction>;
+  attachments?: UseAttachmentsReturn;
   onSubmit: (values: TransactionFormValues) => Promise<void>;
   onCancel: () => void;
 }
 
-export function TransactionForm({ categories, defaultValues, onSubmit, onCancel }: TransactionFormProps) {
+export function TransactionForm({ categories, defaultValues, attachments, onSubmit, onCancel }: TransactionFormProps) {
   const {
     register,
     handleSubmit,
@@ -149,6 +152,8 @@ export function TransactionForm({ categories, defaultValues, onSubmit, onCancel 
         />
         {errors.notes && <p className="text-sm text-destructive">{errors.notes.message}</p>}
       </div>
+
+      {attachments && <AttachmentManager manager={attachments} />}
 
       <div className="flex gap-2 justify-end pt-2">
         <Button type="button" variant="outline" onClick={onCancel}>

@@ -1,4 +1,4 @@
-import { MoreHorizontal, Pencil, Trash2, Repeat2 } from "lucide-react";
+import { MoreHorizontal, Paperclip, Pencil, Trash2, Repeat2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,6 +17,7 @@ interface TransactionTableProps {
   currency: string;
   locale: string;
   isLoading: boolean;
+  attachmentCounts?: Map<string, number>;
   onEdit: (tx: TransactionWithCategory) => void;
   onDelete: (tx: TransactionWithCategory) => void;
 }
@@ -28,6 +29,7 @@ export function TransactionTable({
   currency,
   locale,
   isLoading,
+  attachmentCounts,
   onEdit,
   onDelete,
 }: TransactionTableProps) {
@@ -110,6 +112,12 @@ export function TransactionTable({
                     <span className="text-sm font-medium">{tx.description}</span>
                     {tx.isRecurring && (
                       <Repeat2 className="size-3 text-muted-foreground/40 shrink-0" />
+                    )}
+                    {(attachmentCounts?.get(tx.id) ?? 0) > 0 && (
+                      <span className="flex items-center gap-0.5 font-mono text-[10px] text-muted-foreground/50 shrink-0">
+                        <Paperclip className="size-3" />
+                        {attachmentCounts!.get(tx.id)}
+                      </span>
                     )}
                   </div>
                   {tx.notes && (
