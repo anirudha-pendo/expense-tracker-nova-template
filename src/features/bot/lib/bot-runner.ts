@@ -49,8 +49,8 @@ interface BotAction {
 const FIRST_NAMES = ["Alex","Jordan","Casey","Morgan","Riley","Taylor","Drew","Quinn","Avery","Blake","Charlie","Dana","Emery","Finley","Harper","Indigo","Jesse","Kai","Lane","Marlowe","Noel","Parker","Reese","Sage","Tatum","Val","Wren","Skyler","Robin","Cameron"];
 const LAST_NAMES = ["Smith","Chen","Garcia","Kim","Patel","Johnson","Williams","Brown","Jones","Davis","Miller","Wilson","Moore","Anderson","Thomas","Jackson","White","Harris","Martin","Thompson","Young","Robinson","Lewis","Walker","Hall","Allen","Wright","Scott","Green"];
 const WORKSPACE_NAMES = ["Personal Finance","My Budget","Monthly Expenses","Home Budget","Family Finances","Daily Tracker","Savings Plan","Expense Log","Money Matters","Cash Flow"];
-const CURRENCIES = ["USD","EUR","GBP","INR","JPY","CAD","AUD","BRL"];
-const LOCALES = ["en-US","en-GB","en-IN","de-DE","fr-FR","ja-JP","pt-BR"];
+const CURRENCIES = ["US Dollar (USD)","Euro (EUR)","British Pound (GBP)","Indian Rupee (INR)","Japanese Yen (JPY)","Canadian Dollar (CAD)","Australian Dollar (AUD)","Swiss Franc (CHF)","Chinese Yuan (CNY)"];
+const LOCALES = ["English (US)","English (UK)","English (India)","German (Germany)","French (France)","Japanese (Japan)","Chinese (China)"];
 const TX_DESCRIPTIONS = ["Coffee","Grocery run","Rent","Gas station","Restaurant","Online order","Gym","Pharmacy","Salary","Freelance payment","Utility bill","Movie tickets","Bus pass","Book store","Lunch","Haircut","Subscription","Donation","Clothes shopping","Doctor visit"];
 const DISPLAY_NAMES_EXTRA = ["Sam Rivers","Lou Grant","Pat Kelly","Chris Vega","Jamie Stone","Devon Lee","Skyler Fox","Rowan Hunt","Blair West","Quinn Nash"];
 
