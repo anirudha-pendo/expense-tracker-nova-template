@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, ArrowLeftRight, Target, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, ArrowLeftRight, Lightbulb, Target, Settings, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Sidebar,
@@ -19,6 +19,7 @@ import { useAuthContext } from "@/features/auth/hooks/auth-context";
 const NAV_ITEMS = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/" },
   { label: "Transactions", icon: ArrowLeftRight, href: "/transactions" },
+  { label: "Insights", icon: Lightbulb, href: "/insights" },
   { label: "Goals", icon: Target, href: "/goals" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];

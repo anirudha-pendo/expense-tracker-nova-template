@@ -6,6 +6,7 @@ import { WorkspaceSetupPage } from "@/features/workspace/pages/workspace-setup-p
 import { DashboardPage } from "@/features/dashboard/pages/dashboard-page";
 import { TransactionsPage } from "@/features/transactions/pages/transactions-page";
 import { GoalsPage } from "@/features/goals/pages/goals-page";
+import { InsightsPage } from "@/features/insights/pages/insights-page";
 import { SettingsPage } from "@/features/settings/pages/settings-page";
 import { ProtectedRoute } from "@/shared/components/protected-route";
 import { BotPage } from "@/features/bot/pages/bot-page";
@@ -70,6 +71,14 @@ export function AppRouter() {
           element={
             <ProtectedRoute>
               <TransactionsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/insights"
+          element={
+            <ProtectedRoute>
+              <InsightsPage />
             </ProtectedRoute>
           }
         />
