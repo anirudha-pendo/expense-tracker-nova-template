@@ -31,13 +31,16 @@ export function TransactionsPage() {
   const addAttachments = useAttachments(workspace!.id, null);
   const editAttachments = useAttachments(workspace!.id, editingTx?.id ?? null);
 
+  // Keyed on a stable string: `transactions` is a fresh array each render,
+  // and depending on it directly would re-run this effect forever.
+  const transactionIdsKey = transactions.map((t) => t.id).join(",");
   const refreshAttachmentCounts = useCallback(async () => {
-    if (transactions.length === 0) {
+    if (!transactionIdsKey) {
       setAttachmentCounts(new Map());
       return;
     }
-    setAttachmentCounts(await getAttachmentCounts(transactions.map((t) => t.id)));
-  }, [transactions]);
+    setAttachmentCounts(await getAttachmentCounts(transactionIdsKey.split(",")));
+  }, [transactionIdsKey]);
 
   useEffect(() => {
     refreshAttachmentCounts();
