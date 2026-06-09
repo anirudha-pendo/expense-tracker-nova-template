@@ -4,6 +4,7 @@ import { ProfileForm } from "../components/profile-form";
 import { WorkspaceForm } from "../components/workspace-form";
 import { CategoryManager } from "../components/category-manager";
 import { DataExportImport } from "../components/data-export-import";
+import { BudgetManager } from "@/features/budgets/components/budget-manager";
 
 function Section({ label, description, children }: {
   label: string;
@@ -37,6 +38,10 @@ export function SettingsPage() {
 
         <Section label="Categories" description="manage">
           <CategoryManager />
+        </Section>
+
+        <Section label="Budgets" description="monthly limits">
+          <BudgetManager />
         </Section>
 
         <Section label="Data" description="export · import">
