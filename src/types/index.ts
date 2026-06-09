@@ -47,3 +47,43 @@ export interface Session {
   userId: string;
   workspaceId: string;
 }
+
+export interface GoalContribution {
+  id: string;
+  amount: number;
+  date: string;
+  note?: string;
+}
+
+export interface Goal {
+  id: string;
+  workspaceId: string;
+  name: string;
+  targetAmount: number;
+  deadline?: string;
+  color: string;
+  icon?: string;
+  contributions: GoalContribution[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Budget {
+  id: string;
+  workspaceId: string;
+  categoryId: string;
+  monthlyLimit: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Attachment {
+  id: string;
+  workspaceId: string;
+  transactionId: string;
+  name: string;
+  mimeType: string;
+  size: number;
+  blob: Blob;
+  createdAt: string;
+}

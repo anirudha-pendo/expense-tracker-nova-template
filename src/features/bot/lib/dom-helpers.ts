@@ -86,8 +86,9 @@ export function setReactInput(
   } else {
     el.value = value;
   }
-  el.dispatchEvent(new win.Event("input", { bubbles: true }));
-  el.dispatchEvent(new win.Event("change", { bubbles: true }));
+  const EventCtor = (win as Window & { Event: typeof Event }).Event;
+  el.dispatchEvent(new EventCtor("input", { bubbles: true }));
+  el.dispatchEvent(new EventCtor("change", { bubbles: true }));
 }
 
 // Click a Radix UI Select: open it, then pick an item by its text content

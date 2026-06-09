@@ -1,5 +1,5 @@
 import type { DBSchema } from "idb";
-import type { Category, Transaction, User, Workspace } from "@/types";
+import type { Attachment, Budget, Category, Goal, Transaction, User, Workspace } from "@/types";
 
 export interface ExpenseTrackerDBSchema extends DBSchema {
   users: {
@@ -29,6 +29,29 @@ export interface ExpenseTrackerDBSchema extends DBSchema {
     value: Category;
     indexes: {
       "by-workspaceId": string;
+    };
+  };
+  goals: {
+    key: string;
+    value: Goal;
+    indexes: {
+      "by-workspaceId": string;
+    };
+  };
+  budgets: {
+    key: string;
+    value: Budget;
+    indexes: {
+      "by-workspaceId": string;
+      "by-categoryId": string;
+    };
+  };
+  attachments: {
+    key: string;
+    value: Attachment;
+    indexes: {
+      "by-workspaceId": string;
+      "by-transactionId": string;
     };
   };
 }

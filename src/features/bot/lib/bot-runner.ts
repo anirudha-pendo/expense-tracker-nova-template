@@ -99,7 +99,7 @@ async function navigateTo(
     if (!clicked) {
       // fallback: programmatic navigation
       iframeWin(iframe).history.pushState({}, "", href);
-      iframeWin(iframe).dispatchEvent(new iframeWin(iframe).PopStateEvent("popstate", {}));
+      iframeWin(iframe).dispatchEvent(new (iframeWin(iframe) as Window & { PopStateEvent: typeof PopStateEvent }).PopStateEvent("popstate", {}));
     }
     checkAbort(abortRef);
     await waitFor(landmarkSelector, iframeDoc(iframe), 6000);
@@ -129,7 +129,7 @@ const ACTIONS: BotAction[] = [
       const clicked = clickNavLink("/sign-up", doc) || clickButtonByText("Create account", doc);
       if (!clicked) {
         win.history.pushState({}, "", "/sign-up");
-        win.dispatchEvent(new win.PopStateEvent("popstate", {}));
+        win.dispatchEvent(new (win as Window & { PopStateEvent: typeof PopStateEvent }).PopStateEvent("popstate", {}));
       }
       checkAbort(abortRef);
 
@@ -181,7 +181,7 @@ const ACTIONS: BotAction[] = [
       const doc = iframeDoc(iframe);
 
       win.history.pushState({}, "", "/sign-in");
-      win.dispatchEvent(new win.PopStateEvent("popstate", {}));
+      win.dispatchEvent(new (win as Window & { PopStateEvent: typeof PopStateEvent }).PopStateEvent("popstate", {}));
       checkAbort(abortRef);
 
       await waitFor("#username", doc, 6000);
@@ -252,7 +252,7 @@ const ACTIONS: BotAction[] = [
     name: "navigateDashboard",
     weight: () => 5,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Navigate to Dashboard" });
       await navigateTo(iframe, "/", "h1", abortRef);
       await sleep(randInt(400, 800), abortRef);
@@ -265,7 +265,7 @@ const ACTIONS: BotAction[] = [
     name: "navigateTransactions",
     weight: () => 5,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Navigate to Transactions" });
       await navigateTo(iframe, "/transactions", "h1", abortRef);
       await sleep(randInt(400, 800), abortRef);
@@ -278,7 +278,7 @@ const ACTIONS: BotAction[] = [
     name: "navigateSettings",
     weight: () => 4,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Navigate to Settings" });
       await navigateTo(iframe, "/settings", "h1", abortRef);
       await sleep(randInt(400, 800), abortRef);
@@ -291,7 +291,7 @@ const ACTIONS: BotAction[] = [
     name: "addTransaction",
     weight: () => 12,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Add transaction" });
       const doc = iframeDoc(iframe);
       const win = iframeWin(iframe);
@@ -369,7 +369,7 @@ const ACTIONS: BotAction[] = [
     name: "editTransaction",
     weight: () => 6,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Edit transaction" });
       const doc = iframeDoc(iframe);
       const win = iframeWin(iframe);
@@ -419,7 +419,7 @@ const ACTIONS: BotAction[] = [
     name: "deleteTransaction",
     weight: () => 4,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Delete transaction" });
       const doc = iframeDoc(iframe);
 
@@ -463,7 +463,7 @@ const ACTIONS: BotAction[] = [
     name: "filterTransactions",
     weight: () => 7,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Filter transactions" });
       const doc = iframeDoc(iframe);
       const win = iframeWin(iframe);
@@ -486,7 +486,7 @@ const ACTIONS: BotAction[] = [
     name: "clearFilters",
     weight: () => 3,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Clear filters" });
       const doc = iframeDoc(iframe);
 
@@ -509,7 +509,7 @@ const ACTIONS: BotAction[] = [
     name: "updateProfile",
     weight: () => 3,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Update profile" });
       const doc = iframeDoc(iframe);
       const win = iframeWin(iframe);
@@ -534,7 +534,7 @@ const ACTIONS: BotAction[] = [
     name: "updateWorkspace",
     weight: () => 3,
     canRun: (s) => s.isLoggedIn && s.hasWorkspace,
-    async run(iframe, state, log, abortRef) {
+    async run(iframe, _state, log, abortRef) {
       log({ type: "action", message: "→ Update workspace settings" });
       const doc = iframeDoc(iframe);
       const win = iframeWin(iframe);

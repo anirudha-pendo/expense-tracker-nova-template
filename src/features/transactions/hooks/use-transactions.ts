@@ -6,6 +6,7 @@ import {
   updateTransaction,
 } from "@/lib/db/repositories/transactions.repo";
 import { getCategoriesByWorkspaceId } from "@/lib/db/repositories/categories.repo";
+import { useDataChanged } from "@/shared/lib/data-events";
 import type { Category, Transaction } from "@/types";
 
 export interface TransactionWithCategory extends Transaction {
@@ -45,6 +46,8 @@ export function useTransactions(workspaceId: string): UseTransactionsReturn {
   useEffect(() => {
     reload();
   }, [reload]);
+
+  useDataChanged(reload);
 
   const categoryMap = new Map(categories.map((c) => [c.id, c]));
 
