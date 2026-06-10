@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getTransactionsByWorkspaceId, createTransaction } from "@/lib/db/repositories/transactions.repo";
 import { getCategoriesByWorkspaceId } from "@/lib/db/repositories/categories.repo";
+import { getGoalsByWorkspaceId, createGoal } from "@/lib/db/repositories/goals.repo";
+import { getBudgetsByWorkspaceId, upsertBudget } from "@/lib/db/repositories/budgets.repo";
 import { useAuthContext } from "@/features/auth/hooks/auth-context";
-import type { Transaction } from "@/types";
+import type { Budget, Goal, Transaction } from "@/types";
 
 export function DataExportImport() {
   const { workspace } = useAuthContext();
@@ -18,11 +20,14 @@ export function DataExportImport() {
     if (!workspace) return;
     setIsExporting(true);
     try {
-      const [transactions, categories] = await Promise.all([
+      const [transactions, categories, goals, budgets] = await Promise.all([
         getTransactionsByWorkspaceId(workspace.id),
         getCategoriesByWorkspaceId(workspace.id),
+        getGoalsByWorkspaceId(workspace.id),
+        getBudgetsByWorkspaceId(workspace.id),
       ]);
-      const data = { workspace, transactions, categories, exportedAt: new Date().toISOString() };
+      // Receipt attachments (binary blobs) are intentionally not included.
+      const data = { workspace, transactions, categories, goals, budgets, exportedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       downloadBlob(blob, `expense-tracker-export-${new Date().toISOString().slice(0, 10)}.json`);
       toast.success("Exported successfully");
@@ -71,7 +76,11 @@ export function DataExportImport() {
 
     try {
       const text = await file.text();
-      const data = JSON.parse(text) as { transactions: Transaction[] };
+      const data = JSON.parse(text) as {
+        transactions: Transaction[];
+        goals?: Goal[];
+        budgets?: Budget[];
+      };
 
       if (!Array.isArray(data.transactions)) throw new Error("Invalid format: missing transactions array");
 
@@ -88,7 +97,31 @@ export function DataExportImport() {
         imported++;
       }
 
-      toast.success(`Imported ${imported} transaction${imported !== 1 ? "s" : ""}`);
+      // Optional sections from newer exports; older files simply lack them.
+      let extras = 0;
+      if (Array.isArray(data.goals)) {
+        for (const goal of data.goals) {
+          await createGoal({
+            ...goal,
+            id: crypto.randomUUID(),
+            workspaceId: workspace.id,
+            contributions: (goal.contributions ?? []).map((c) => ({ ...c, id: crypto.randomUUID() })),
+          });
+          extras++;
+        }
+      }
+      if (Array.isArray(data.budgets)) {
+        for (const budget of data.budgets) {
+          await upsertBudget({ ...budget, id: crypto.randomUUID(), workspaceId: workspace.id });
+          extras++;
+        }
+      }
+
+      toast.success(
+        `Imported ${imported} transaction${imported !== 1 ? "s" : ""}${
+          extras > 0 ? ` and ${extras} goal${extras !== 1 ? "s" : ""}/budget${extras !== 1 ? "s" : ""}` : ""
+        }`
+      );
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Import failed — check the file format");
     } finally {
@@ -117,7 +150,10 @@ export function DataExportImport() {
       <div className="flex flex-col gap-3">
         <div>
           <h4 className="text-sm font-medium mb-1">Export</h4>
-          <p className="text-sm text-muted-foreground mb-3">Download all your transactions and categories.</p>
+          <p className="text-sm text-muted-foreground mb-3">
+            Download your transactions, categories, goals, and budgets. Receipt attachments are not
+            included in backups.
+          </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={handleExportJSON} disabled={isExporting}>
               {isExporting ? (

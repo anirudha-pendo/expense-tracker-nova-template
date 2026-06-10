@@ -19,5 +19,14 @@ export async function updateTransaction(transaction: Transaction): Promise<void>
 
 export async function deleteTransaction(id: string): Promise<void> {
   const db = await getDB();
-  await db.delete("transactions", id);
+  // Cascade: remove the transaction and its receipt attachments atomically.
+  const tx = db.transaction(["transactions", "attachments"], "readwrite");
+  await tx.objectStore("transactions").delete(id);
+  const attachmentStore = tx.objectStore("attachments");
+  let cursor = await attachmentStore.index("by-transactionId").openKeyCursor(id);
+  while (cursor) {
+    await attachmentStore.delete(cursor.primaryKey);
+    cursor = await cursor.continue();
+  }
+  await tx.done;
 }

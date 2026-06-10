@@ -7,6 +7,8 @@ import { useAuthContext } from "@/features/auth/hooks/auth-context";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/" },
   { label: "Transactions", href: "/transactions" },
+  { label: "Insights", href: "/insights" },
+  { label: "Goals", href: "/goals" },
   { label: "Settings", href: "/settings" },
 ];
 

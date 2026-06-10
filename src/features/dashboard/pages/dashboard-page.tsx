@@ -5,6 +5,8 @@ import { SummaryCards } from "../components/summary-cards";
 import { SpendingByCategoryChart } from "../components/spending-by-category-chart";
 import { MonthlyTrendChart } from "../components/monthly-trend-chart";
 import { RecentTransactions } from "../components/recent-transactions";
+import { BudgetOverview } from "@/features/budgets/components/budget-overview";
+import { InsightsStrip } from "@/features/insights/components/insights-strip";
 
 export function DashboardPage() {
   const { workspace } = useAuthContext();
@@ -15,6 +17,8 @@ export function DashboardPage() {
   return (
     <AppLayout title="Dashboard">
       <div className="flex flex-col gap-6">
+        <InsightsStrip />
+
         <SummaryCards
           stats={stats.summary}
           currency={currency}
@@ -36,6 +40,8 @@ export function DashboardPage() {
             isLoading={stats.isLoading}
           />
         </div>
+
+        <BudgetOverview />
 
         <RecentTransactions
           transactions={stats.recentTransactions}

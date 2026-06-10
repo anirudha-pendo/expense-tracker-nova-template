@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getTransactionsByWorkspaceId } from "@/lib/db/repositories/transactions.repo";
 import { getCategoriesByWorkspaceId } from "@/lib/db/repositories/categories.repo";
+import { useDataChanged } from "@/shared/lib/data-events";
 import type { Category, Transaction } from "@/types";
 import { startOfMonth, endOfMonth, subMonths, format } from "date-fns";
 
@@ -52,6 +53,8 @@ export function useDashboardStats(workspaceId: string): DashboardStats {
   useEffect(() => {
     load();
   }, [load]);
+
+  useDataChanged(load);
 
   const categoryMap = new Map(categories.map((c) => [c.id, c]));
 
